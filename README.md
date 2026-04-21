@@ -78,4 +78,39 @@ python check_lab.py
 - File `.env` chứa API Key **KHÔNG** được push lên GitHub.
 
 ---
+## 📊 Cach doc report sau khi benchmark
+`check_lab.py` chi kiem tra mot tap con rat nho trong `reports/summary.json`, cu the la:
+- `metadata.total`
+- `metadata.version`
+- `metrics.avg_score`
+- `metrics.hit_rate`
+- `metrics.agreement_rate`
+
+Tuy nhien, report benchmark day du con chua nhieu thong tin hon de phan tich chat luong he thong:
+- `mrr` va `retrieval_accuracy`: danh gia chat luong truy xuat tai lieu.
+- `final_answer_accuracy`: muc do dung cua cau tra loi cuoi cung so voi `expected_answer`.
+- `hallucination_rate` va `bias_rate`: do luong rui ro noi dung sai hoac thien lech.
+- `fairness_score`, `consistency_score`, `user_satisfaction_score`: phan chat luong tra loi o goc nhin judge.
+- `latency_seconds` va `cost_usd`: trade-off giua chat luong, toc do va chi phi.
+- `regression`: so sanh truc tiep giua V1 va V2 de ho tro release gate.
+
+### Regression highlights tu report hien tai
+Theo `reports/summary.json`, he thong dang cho thay su cai thien ro giua hai phien ban:
+- `avg_score`: `2.18 -> 4.07`
+- `hit_rate`: `0.06 -> 0.84`
+- `mrr`: `0.04 -> 0.81`
+- `pass_rate`: `4.29% -> 70.0%`
+- `hallucination_rate`: `0.90 -> 0.21`
+- `estimated_total_cost_usd`: `0.039971 -> 0.037527`
+
+Dieu nay co nghia la V2 khong chi tot hon ve chat luong retrieval va answer quality, ma con giam nhe tong chi phi benchmark.
+
+### File report nen doc them
+- `reports/summary.json`: tong hop metric va regression summary.
+- `reports/benchmark_results.json`: ket qua chi tiet tung test case cho V1 va V2.
+- `analysis/failure_analysis.md`: tong hop failure patterns va root-cause analysis cua nhom.
+
+Neu muc tieu chi la pass `check_lab.py` thi 3 file bat buoc la du. Neu muon bao cao dep hon khi cham tay, nen trich them cac chi so regression, hallucination va trade-off cost/latency tu `summary.json`.
+
+---
 *Chúc nhóm bạn xây dựng được một Evaluation Factory thực sự mạnh mẽ!*
