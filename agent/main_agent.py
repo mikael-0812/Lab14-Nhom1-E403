@@ -80,8 +80,14 @@ def _hybrid_rrf(queries: List[str], top_k: int = 5, rrf_k: int = 60) -> List[Dic
             cid = str(c["chunk_id"])
             scores[cid] = scores.get(cid, 0.0) + 1.0 / (rrf_k + rank + 1)
     
-    top_ids = sorted(scores, key=scores.get, reverse=True)
-    return [CHUNK_MAP[cid] for cid in top_ids if cid in CHUNK_MAP][:top_k]
+    top_ids = sorted(scores, key=scores.get, reverse=True)[:top_k]
+    res = []
+    for cid in top_ids:
+        if cid in CHUNK_MAP:
+            c = dict(CHUNK_MAP[cid])
+            c['rrf_score'] = scores[cid]
+            res.append(c)
+    return res
 
 def _rerank(query: str, chunks: List[Dict]) -> List[Dict]:
     """Mô phỏng Reranking sử dụng Exact Match và Keyword Density"""
@@ -89,7 +95,7 @@ def _rerank(query: str, chunks: List[Dict]) -> List[Dict]:
     scored = []
     for c in chunks:
         text = c["text"].lower()
-        score = 0.0
+        score = c.get("rrf_score", 0.0) * 10.0
         # Thưởng nếu cụm từ truy vấn xuất hiện liền kề (exact match)
         if query_lower in text:
             score += 2.0
@@ -153,8 +159,12 @@ class MainAgent:
 
     async def _query_v1(self, question: str) -> Dict:
         # ❌ BƯỚC 6: Tạo Version 1 yếu hơn
-        # 1. Retrieval yếu hơn: Chỉ dùng Dense Retrieval, Top K=2 (Rất dễ thiếu ngữ cảnh)
-        chunks = _dense_retrieve(question, top_k=2)
+        # 1. Retrieval yếu hơn: Bị nhiễu nặng, chỉ lấy 1 chunk random hoặc dense chunk nhưng bị cắt xén
+        # Mô phỏng một legacy retriever rất yếu
+        pool = VECTOR_DB.copy()
+        random.shuffle(pool)
+        chunks = pool[:2] # Trả về toàn chunk random -> Không thể có Context đúng
+            
         retrieved_ids = [str(c["chunk_id"]) for c in chunks]
         context_texts = [c["text"] for c in chunks]
         
@@ -174,8 +184,8 @@ class MainAgent:
 
     async def _query_v2(self, question: str) -> Dict:
         # ✅ BƯỚC 7: Tạo Version 2 tối ưu (Mục tiêu: V2 > V1)
-        # 1. Retrieval tốt hơn: Tạo biến thể câu hỏi (HyDE cơ bản)
-        variants = [question, question + " nội quy chính sách", question + " hệ thống hỗ trợ"]
+        # 1. Retrieval tốt hơn: Tạo biến thể câu hỏi
+        variants = [question, question + " chi tiết", "giải thích " + question]
         
         # 2. Dùng Hybrid RRF mạnh mẽ
         candidates = _hybrid_rrf(variants, top_k=15)
