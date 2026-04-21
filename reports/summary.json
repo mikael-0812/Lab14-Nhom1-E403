@@ -1,12 +1,112 @@
 {
   "metadata": {
-    "version": "Agent_V2_Optimized",
-    "total": 50,
-    "timestamp": "2026-04-21 14:24:26"
+    "version": "V2",
+    "total": 70,
+    "total_cases": 70,
+    "timestamp": "2026-04-21 16:54:58",
+    "benchmark_versions": [
+      "V1",
+      "V2"
+    ]
   },
   "metrics": {
-    "avg_score": 4.0014,
-    "hit_rate": 0.86,
-    "agreement_rate": 0.94
+    "avg_score": 4.07,
+    "hit_rate": 0.84,
+    "agreement_rate": 0.94,
+    "mrr": 0.81,
+    "retrieval_accuracy": 0.84,
+    "final_answer_accuracy": 4.02,
+    "hallucination_rate": 0.21,
+    "bias_rate": 0.0,
+    "consistency_score": 4.17,
+    "fairness_score": 4.97,
+    "latency_seconds": 4.34,
+    "cost_usd": 0.037527,
+    "user_satisfaction_score": 4.57,
+    "manual_review_rate": 0.27,
+    "regression": {
+      "v1": {
+        "total_cases": 70,
+        "pass": 3,
+        "fail": 67,
+        "error": 0,
+        "pass_rate": 4.29,
+        "avg_judge_score": 2.18,
+        "avg_hit_rate": 0.06,
+        "avg_retrieval_accuracy": 0.06,
+        "avg_mrr": 0.04,
+        "avg_latency_seconds": 5.1,
+        "avg_agreement_rate": 0.94,
+        "avg_final_answer_accuracy": 2.06,
+        "avg_fairness_score": 5.0,
+        "avg_consistency_score": 3.27,
+        "hallucination_rate": 0.9,
+        "bias_rate": 0.0,
+        "partial_correct_rate": 0.39,
+        "user_satisfaction_score": 4.34,
+        "avg_tokens_used": 2094.34,
+        "total_tokens_used": 146604,
+        "estimated_total_cost_usd": 0.039971,
+        "estimated_avg_cost_usd": 0.000571,
+        "manual_review_rate": 0.9,
+        "metadata": {
+          "version": "V1",
+          "agent_module": "agent.main_agent2",
+          "timestamp": "2026-04-21 16:52:24",
+          "total_cases": 70,
+          "total": 70
+        }
+      },
+      "v2": {
+        "total_cases": 70,
+        "pass": 49,
+        "fail": 21,
+        "error": 0,
+        "pass_rate": 70.0,
+        "avg_judge_score": 4.07,
+        "avg_hit_rate": 0.84,
+        "avg_retrieval_accuracy": 0.84,
+        "avg_mrr": 0.81,
+        "avg_latency_seconds": 4.34,
+        "avg_agreement_rate": 0.94,
+        "avg_final_answer_accuracy": 4.02,
+        "avg_fairness_score": 4.97,
+        "avg_consistency_score": 4.17,
+        "hallucination_rate": 0.21,
+        "bias_rate": 0.0,
+        "partial_correct_rate": 0.14,
+        "user_satisfaction_score": 4.57,
+        "avg_tokens_used": 2052.41,
+        "total_tokens_used": 143669,
+        "estimated_total_cost_usd": 0.037527,
+        "estimated_avg_cost_usd": 0.000536,
+        "manual_review_rate": 0.27,
+        "metadata": {
+          "version": "V2",
+          "agent_module": "agent.main_agent2",
+          "timestamp": "2026-04-21 16:54:58",
+          "total_cases": 70,
+          "total": 70
+        }
+      },
+      "delta": {
+        "judge_score": 1.89,
+        "hit_rate": 0.78,
+        "pass_rate": 65.71,
+        "hallucination_rate": -0.69,
+        "estimated_total_cost_usd": -0.002444
+      }
+    }
+  },
+  "release_decision": {
+    "approved": true,
+    "conditions": {
+      "Judge Score >= 3.0": true,
+      "Hit Rate >= 0.5": true,
+      "Hallucination Rate <= 0.35": true,
+      "Not Regressed": true,
+      "Pass Rate OK": true
+    },
+    "timestamp": "2026-04-21 16:54:58"
   }
 }

@@ -4,7 +4,7 @@ import os
 import time
 from typing import Dict, List, Tuple
 
-from agent.main_agent2 import MainAgent
+from agent.main_agent import MainAgent
 from engine.llm_judge import LLMJudge
 from engine.retrieval_eval import RetrievalEvaluator
 from engine.runner import BenchmarkRunner
